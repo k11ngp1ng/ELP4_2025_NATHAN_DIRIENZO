@@ -19,8 +19,25 @@ namespace ProjetoElp4Paises
         }
         protected override void Pesquisar()
         {
+            ListV.Items.Clear();
+            string chave = txtCodigo.Text.Trim();
 
-        }
+            List<Paises> lista = aCtrlPaises.Pesquisar(chave);
+
+            if (lista == null || lista.Count == 0)
+                MessageBox.Show("Nenhum registro encontrado!");
+                return;
+
+            foreach (var oPais in lista) 
+            {
+                ListViewItem item = new ListViewItem(Convert.ToString(oPais.Codigo));
+                item.SubItems.Add(oPais.Pais);
+                item.SubItems.Add(oPais.Sigla);
+                item.SubItems.Add(oPais.Ddi);
+                item.SubItems.Add(oPais.Moeda);
+                ListV.Items.Add(item);
+			}
+		}
         protected override void Incluir()
         {
             oFrmCadPaises.LimpaTxt();
@@ -61,7 +78,7 @@ namespace ProjetoElp4Paises
 			oFrmCadPaises.CarregaTxt();
             oFrmCadPaises.BloquearTxt();
             aux = oFrmCadPaises.btnSalvar.Text;
-            oFrmCadPaises.btnSalvar.Text = "Excluir";
+            oFrmCadPaises.btnSalvar.Text = "&Excluir";
 			oFrmCadPaises.ShowDialog();
             oFrmCadPaises.DesbloquearTxt();
             oFrmCadPaises.btnSalvar.Text = aux;
@@ -80,5 +97,14 @@ namespace ProjetoElp4Paises
                 aCtrlPaises = (CtrlPaises)ctrl;
             this.CarregaLV();
 		}
-    }
+
+		private void ListV_SelectedIndexChanged(object sender, EventArgs e)
+		{
+            if (this.ListV.SelectedItems.Count > 0) 
+            {
+                int codigo = Convert.ToInt32(this.ListV.SelectedItems[0].SubItems[0].Text);
+                oPais = (Paises)aCtrlPaises.CarregaObjeto(codigo);
+			}
+		}
+	}
 }

@@ -34,8 +34,14 @@ namespace ProjetoElp4Paises
             oPais.Sigla = txtSigla.Text;
             oPais.Ddi = txtDDI.Text;
             oPais.Moeda = txtMoeda.Text;
-            MessageBox.Show(aCtrlPaises.Salvar(oPais.Clone()));
-
+            if (btnSalvar.Text == "&Salvar")
+            {
+                MessageBox.Show(aCtrlPaises.Salvar(oPais.Clone()));
+            }
+            if (btnSalvar.Text == "&Excluir")
+			{
+                MessageBox.Show(aCtrlPaises.Excluir(oPais));
+			}
 			//aCtrl.Salvar(oPais);
 		}
 		public override void CarregaTxt()
@@ -58,14 +64,16 @@ namespace ProjetoElp4Paises
         }
         public override void BloquearTxt()
         {
-            this.txtPais.Enabled = false;
+            this.txtCodigo.Enabled = false;
+			this.txtPais.Enabled = false;
             this.txtSigla.Enabled = false;
             this.txtDDI.Enabled = false;
             this.txtMoeda.Enabled = false;
         }
         public override void DesbloquearTxt()
         {
-            this.txtPais.Enabled = true;
+            this.txtCodigo.Enabled = true;
+			this.txtPais.Enabled = true;
             this.txtSigla.Enabled = true;
             this.txtDDI.Enabled = true;
             this.txtMoeda.Enabled = true;

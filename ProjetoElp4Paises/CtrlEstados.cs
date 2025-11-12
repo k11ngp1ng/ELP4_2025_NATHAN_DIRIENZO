@@ -25,9 +25,13 @@ namespace ProjetoElp4Paises
 		{
 			return aDaoEstados.Excluir(obj);
 		}
-		public List<Paises> TodosPaises()
+		public override Object CarregaObjeto(int chave)
 		{
-			return aColPaises.Todos();
+			return aDaoEstados.CarregaObjeto(chave);
+		}
+		public override List<Estados> Listar()
+		{
+			return aDaoEstados.Listar();
 		}
 	}
 }

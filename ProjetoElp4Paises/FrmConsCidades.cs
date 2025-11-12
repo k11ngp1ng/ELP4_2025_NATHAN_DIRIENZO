@@ -36,15 +36,23 @@ namespace ProjetoElp4Paises
             oFrmCadCidades.LimpaTxt();
             oFrmCadCidades.CarregaTxt();
             oFrmCadCidades.ShowDialog();
-        }
+			this.CarregaLV();
+		}
 		protected override void CarregaLV()
 		{
-			ListViewItem item = new ListViewItem(Convert.ToString(aCidade.Codigo));
-			item.SubItems.Add(aCidade.Cidade);
-			item.SubItems.Add(aCidade.Ddd);
-			item.SubItems.Add(aCidade.OEstado.Estado);
-			item.SubItems.Add(Convert.ToString(aCidade.OEstado.Codigo));
-			ListV.Items.Add(item);
+			ListV.Items.Clear();
+			List<Cidades> lista = aCtrlCidades.Listar();
+			if (lista == null || lista.Count == 0)
+				return;
+			foreach (var aCidade in lista)
+			{
+				ListViewItem item = new ListViewItem(Convert.ToString(aCidade.Codigo));
+				item.SubItems.Add(aCidade.Cidade);
+				item.SubItems.Add(aCidade.Ddd);
+				item.SubItems.Add(aCidade.OEstado.Estado);
+				item.SubItems.Add(Convert.ToString(aCidade.OEstado.Codigo));
+				ListV.Items.Add(item);
+			}
 		}
 		protected override void Excluir()
         {
@@ -55,10 +63,11 @@ namespace ProjetoElp4Paises
 			oFrmCadCidades.CarregaTxt();
 			oFrmCadCidades.BloquearTxt();
 			aux = oFrmCadCidades.btnSalvar.Text;
-			oFrmCadCidades.btnSalvar.Text = "Excluir";
+			oFrmCadCidades.btnSalvar.Text = "&Excluir";
 			oFrmCadCidades.ShowDialog();
 			oFrmCadCidades.DesbloquearTxt();
 			oFrmCadCidades.btnSalvar.Text = aux;
+            this.CarregaLV();
 		}
         public override void setFrmCadastro(object obj)
         {
@@ -71,7 +80,17 @@ namespace ProjetoElp4Paises
                 aCidade = (Cidades)obj;
             if (ctrl != null)
                 aCtrlCidades = (CtrlCidades)ctrl;
-        }
-    }
+			this.CarregaLV();
+		}
+
+		private void ListV_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			if (this.ListV.SelectedItems.Count > 0)
+			{
+				int codigo = Convert.ToInt32(this.ListV.SelectedItems[0].SubItems[0].Text);
+				aCidade = (Cidades)aCtrlCidades.CarregaObjeto(codigo);
+			}
+		}
+	}
 }
 

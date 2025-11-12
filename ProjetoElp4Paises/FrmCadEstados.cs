@@ -47,8 +47,14 @@ namespace ProjetoElp4Paises
             oEstado.Uf = txtUf.Text;
             oEstado.OPais.Codigo = Convert.ToInt32(txtCodigoPais.Text);
             oEstado.OPais.Pais = txtPais.Text;
-            MessageBox.Show(aCtrlEstados.Salvar(oEstado.Clone()));
-
+            if (btnSalvar.Text == "&Salvar")
+            {
+                MessageBox.Show(aCtrlEstados.Salvar(oEstado.Clone()));
+            }
+            if (btnSalvar.Text == "Excluir")
+            {
+                MessageBox.Show(aCtrlEstados.Excluir(oEstado));
+			}
 			//aCtrl.Salvar(oPais);
 		}
         public override void CarregaTxt()
@@ -70,14 +76,16 @@ namespace ProjetoElp4Paises
 		}
         public override void BloquearTxt()
         {
-            this.txtEstado.Enabled = false;
+            this.txtCodigo.Enabled = false;
+			this.txtEstado.Enabled = false;
             this.txtUf.Enabled = false;
             this.txtCodigoPais.Enabled = false;
             this.txtPais.Enabled = false;
 		}
         public override void DesbloquearTxt()
         {
-            this.txtEstado.Enabled = true;
+           this.txtCodigo.Enabled = true;
+			this.txtEstado.Enabled = true;
             this.txtUf.Enabled = true;
             this.txtCodigoPais.Enabled = true;
             this.txtPais.Enabled = true;

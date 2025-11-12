@@ -39,7 +39,18 @@ namespace ProjetoElp4Paises
 		}
 		public override string Excluir(object obj)
 		{
-			return null;
+			string mSql = "";
+			string mOk = "";
+
+			Paises oPais = (Paises)obj;
+			mSql = "delete from paises where codigo = @codigo";
+			using (SqlCommand cmd = new SqlCommand(mSql, cnn))
+			{
+				cmd.Parameters.AddWithValue("@codigo", oPais.Codigo);
+				cmd.ExecuteNonQuery();
+				mOk = "Registro excluido com sucesso";
+			}
+			return mOk;
 		}
 		public override List<Paises> Listar()
 		{
@@ -67,11 +78,52 @@ namespace ProjetoElp4Paises
 		}
 		public override Object CarregaObjeto(int chave)
 		{
-			return null;
+			Paises oPais = null;
+			string mSql = "select * from paises where codigo = @codigo";
+			using (SqlCommand cmd = new SqlCommand(mSql, cnn))
+			{
+				cmd.Parameters.AddWithValue("@codigo", chave);
+				using (SqlDataReader dr = cmd.ExecuteReader())
+				{
+					while (dr.Read())
+					{
+						oPais = new Paises();
+						oPais.Codigo = Convert.ToInt32(dr["codigo"]);
+						oPais.Pais = Convert.ToString(dr["pais"]);
+						oPais.Sigla = Convert.ToString(dr["sigla"]);
+						oPais.Ddi = Convert.ToString(dr["ddi"]);
+						oPais.Moeda = Convert.ToString(dr["moeda"]);
+						oPais.DatCad = Convert.ToDateTime(dr["datcad"]);
+						oPais.UltAlt = Convert.ToDateTime(dr["ultalt"]);
+					}
+				}
+			}
+			return oPais;
 		}
 		public override List<Paises> Pesquisar(string chave)
 		{
-			return null;
+			List<Paises>lista = new List<Paises>();
+			string mSql = $"select * from paises where pais like '%{chave}%'";
+
+			using (SqlCommand cmd = new SqlCommand(mSql, cnn))
+			{
+				using (SqlDataReader dr = cmd.ExecuteReader())
+				{
+					while (dr.Read())
+					{
+						Paises oPais = new Paises();
+						oPais.Codigo = Convert.ToInt32(dr["codigo"]);
+						oPais.Pais = Convert.ToString(dr["pais"]);
+						oPais.Sigla = Convert.ToString(dr["sigla"]);
+						oPais.Ddi = Convert.ToString(dr["ddi"]);
+						oPais.Moeda = Convert.ToString(dr["moeda"]);
+						oPais.DatCad = Convert.ToDateTime(dr["datcad"]);
+						oPais.UltAlt = Convert.ToDateTime(dr["ultalt"]);
+						lista.Add(oPais);
+					}
+				}
+			}
+			return lista;
 		}
 	}
 }

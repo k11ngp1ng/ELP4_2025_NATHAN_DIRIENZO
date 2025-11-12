@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
@@ -38,15 +39,64 @@ namespace ProjetoElp4Paises
 		}
 		public override string Excluir(object obj)
 		{
-			return null;
+			string mSql = "";
+			string mOk = "";
+
+			Cidades aCidade = (Cidades)obj;
+			mSql = "delete from cidades where codigo = @codigo";
+			using (SqlCommand cmd = new SqlCommand(mSql, cnn))
+			{
+				cmd.Parameters.AddWithValue("@codigo", aCidade.Codigo);
+				cmd.ExecuteNonQuery();
+				mOk = "Registro excluido com sucesso";
+			}
+			return mOk;
 		}
 		public override List<Cidades> Listar()
 		{
-			return null;
+			List<Cidades> lista = new List<Cidades>();
+			string mSql = "select * from cidades order by codigo";
+			using (SqlCommand cmd = new SqlCommand(mSql, cnn))
+			{
+				using (SqlDataReader dr = cmd.ExecuteReader())
+				{
+					while (dr.Read())
+					{
+						Cidades aCidade = new Cidades();
+						aCidade.Codigo = Convert.ToInt32(dr["codigo"]);
+						aCidade.Cidade = Convert.ToString(dr["cidade"]);
+						aCidade.Ddd = Convert.ToString(dr["ddd"]);
+						aCidade.OEstado.Codigo = Convert.ToInt32(dr["codigoestado"]);
+						aCidade.DatCad = Convert.ToDateTime(dr["datcad"]);
+						aCidade.UltAlt = Convert.ToDateTime(dr["ultalt"]);
+						lista.Add(aCidade);
+					}
+				}
+			}
+			return lista;
 		}
 		public override Object CarregaObjeto(int chave)
 		{
-			return null;
+			Cidades aCidade = null;
+			string mSql = "select * from cidades where codigo = @codigo";
+			using (SqlCommand cmd = new SqlCommand(mSql, cnn))
+			{
+				cmd.Parameters.AddWithValue("@codigo", chave);
+				using (SqlDataReader dr = cmd.ExecuteReader())
+				{
+					while (dr.Read())
+					{
+						aCidade = new Cidades();
+						aCidade.Codigo = Convert.ToInt32(dr["codigo"]);
+						aCidade.Cidade = Convert.ToString(dr["cidade"]);
+						aCidade.Ddd = Convert.ToString(dr["ddd"]);
+						aCidade.OEstado.Codigo = Convert.ToInt32(dr["codigoestado"]);
+						aCidade.DatCad = Convert.ToDateTime(dr["datcad"]);
+						aCidade.UltAlt = Convert.ToDateTime(dr["ultalt"]);
+					}
+				}
+			}
+			return aCidade;
 		}
 		public override List<Cidades> Pesquisar(string chave)
 		{

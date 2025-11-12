@@ -43,8 +43,14 @@ namespace ProjetoElp4Paises
             aCidade.Ddd = txtDdd.Text;
             aCidade.OEstado.Codigo = Convert.ToInt32(txtCodigoEstado.Text);
             aCidade.OEstado.Estado = txtEstado.Text;
-			MessageBox.Show(aCtrlCidades.Salvar(aCidade.Clone()));
-
+            if (btnSalvar.Text == "&Salvar")
+            {
+                MessageBox.Show(aCtrlCidades.Salvar(aCidade.Clone()));
+            }
+            if (btnSalvar.Text == "&Excluir")
+            {
+                MessageBox.Show(aCtrlCidades.Excluir(aCidade));
+			}
 			//aCtrl.Salvar(oPais);
 		}
         public override void CarregaTxt()
@@ -67,13 +73,15 @@ namespace ProjetoElp4Paises
 		}
         public override void BloquearTxt()
         {
-            this.txtCidade.Enabled = false;
+            this.txtCodigo.Enabled = false;
+			this.txtCidade.Enabled = false;
             this.txtDdd.Enabled = false;
             this.txtCodigoEstado.Enabled = false;
             this.txtEstado.Enabled = false;
 		}
         public override void DesbloquearTxt()
         {
+            this.txtCodigo.Enabled = true;
             this.txtCidade.Enabled = true;
             this.txtDdd.Enabled = true;
             this.txtCodigoEstado.Enabled = true;

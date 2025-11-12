@@ -31,12 +31,12 @@ namespace ProjetoElp4Paises
 		}
 		public override Object CarregaObjeto(int chave)
 		{
-			return null;
+			return aDaoPaises.CarregaObjeto(chave);
 		}
 
 		public override List<Paises> Pesquisar(string chave)
 		{
-			return null;
+			return aDaoPaises.Pesquisar(chave);
 		}
 		/*public List<Paises> TodosPaises() 
 		{
